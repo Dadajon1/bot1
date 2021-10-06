@@ -1,0 +1,42 @@
+from aiogram.types.reply_keyboard import ReplyKeyboardMarkup, KeyboardButton
+
+send_phone = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text="Send Number", request_contact=True)
+        ]
+    ],
+    one_time_keyboard=True,
+    resize_keyboard=True,
+)
+
+main_menu = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text="Give Like"),
+            KeyboardButton(text="Receive Like")
+        ],
+        [
+            KeyboardButton(text="Give Comment"),
+            KeyboardButton(text="Receive Comment")
+        ],
+        [
+            KeyboardButton(text="Balance")
+        ],
+        [
+            KeyboardButton(text="Service Policy")
+        ]
+    ],
+    resize_keyboard=True,
+)
+
+
+check_list = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text="Check✅")
+        ]
+    ],
+    one_time_keyboard=True,
+    resize_keyboard=True,
+)
