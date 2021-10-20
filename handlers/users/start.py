@@ -1,15 +1,37 @@
+from datetime import datetime
+
 from aiogram import types
 from aiogram.dispatcher.filters.builtin import CommandStart
-from keyboards.default import send_phone
+from aiogram.utils.deep_linking import decode_payload
+
+from keyboards.default import send_phone, main_menu
 from aiogram.dispatcher import FSMContext
 from states.UserState import Form
-from loader import dp
+from loader import dp, bot
+from utils.db_api import users_db
 
-
+# Start State
 @dp.message_handler(CommandStart(), state='*')
 async def bot_start(message: types.Message, state: FSMContext):
-    await Form.GetPhone.set()
-    text = f"Hi, <b>{message.from_user.full_name}!</b>\n"
-    text += "Welcome to our bot.\n\n" \
-            "Click the Send Number button to use the bot."
-    await message.answer(text=text, reply_markup=send_phone)
+    textback = ""
+    args = message.get_args()
+    async with state.proxy() as data:
+        req_db = users_db.update_one({'user_id': message.from_user.id},
+            {'$set': {
+                "updated": datetime.now(),
+                "user_id": message.from_user.id,
+                "user_info": message.from_user.full_name,
+                "username": message.from_user.username,
+                }
+        }, upsert=True)
+        if (req_db.matched_count):
+            textback = "I'm glad to see you again, {}".format(message.from_user.first_name)
+
+        else:
+            textback = "Welcome {}".format(message.from_user.first_name)
+        print(textback)
+    try:
+        await bot.send_message(args, "Sizning do'stingiz qo'shildi")
+    except:
+        await message.answer(textback, reply_markup=main_menu)
+        await Form.GetInfo.set()

@@ -21,22 +21,45 @@ main_menu = ReplyKeyboardMarkup(
             KeyboardButton(text="Receive Comment")
         ],
         [
-            KeyboardButton(text="Balance")
+            KeyboardButton(text="My Profile"),
+            KeyboardButton(text="Invite Friends"),
+
         ],
         [
+            KeyboardButton(text="Payment History"),
             KeyboardButton(text="Service Policy")
         ]
     ],
     resize_keyboard=True,
 )
 
-
 check_list = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text="Check✅")
+            KeyboardButton(text="I'm Done")
         ]
     ],
     one_time_keyboard=True,
     resize_keyboard=True,
+)
+
+okay_skip = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text="Okay"),
+            KeyboardButton(text="Skip")
+        ]
+    ],
+    one_time_keyboard=True,
+    resize_keyboard=True,
+)
+
+comment_button = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text='Accept')
+        ]
+    ],
+    one_time_keyboard=True,
+    resize_keyboard=True
 )

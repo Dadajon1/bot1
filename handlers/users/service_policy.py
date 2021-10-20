@@ -4,11 +4,10 @@ from aiogram import types
 
 from states.UserState import Form
 
-
 @dp.message_handler(text='Service Policy', state=Form.GetInfo)
 async def privacy_policy(msg: types.Message):
     await msg.answer(
-        text="""👑 📜 Rules 📜 👑
+        text="""<b>👑 📜 Rules 📜 👑
 1️⃣ Do not attempt to cheat.
 ------------------------------
 2️⃣ You have to write your own comments.
@@ -24,5 +23,5 @@ async def privacy_policy(msg: types.Message):
 7️⃣ If you share a link from a different Instagram account than the one you registered with, we will take 25 coins from you...
 ------------------------------
 8️⃣ Read those 7 rules again, we are very serious. We will ban you if you break them.
-------------------------------""",
+------------------------------</b>""",
         reply_markup=main_menu)

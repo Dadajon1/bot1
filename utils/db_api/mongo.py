@@ -8,3 +8,5 @@ storage = MongoStorage()
 database = client["instagram"]
 
 users_db = database["users"]
+like_link_db = database["like_link_db"]
+comment_link_db = database["comment_link_db"]
