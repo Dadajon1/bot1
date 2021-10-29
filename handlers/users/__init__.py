@@ -11,3 +11,4 @@ from . import invite_friends
 # from . import echo
 from . import service_policy
 from . import payment_history
+from . import paypal

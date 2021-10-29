@@ -9,7 +9,7 @@ from utils.db_api import users_db, comment_link_db
 from states.UserState import Form
 
 
-@dp.message_handler(text="Receive Comment", state=Form.GetInfo)
+@dp.message_handler(text="Receive Comment", state="*")
 async def receive_like(msg: types.Message):
     balance = users_db.find_one({'user_id': msg.chat.id})
     try:

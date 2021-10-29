@@ -6,7 +6,7 @@ from utils.db_api import users_db
 from aiogram import types
 
 
-@dp.message_handler(text="My Profile", state=Form.GetInfo)
+@dp.message_handler(text="My Profile", state="*")
 async def check(msg: types.Message):
     balance = users_db.find_one({'user_id': msg.chat.id})
     text = "❇️ My Profile ❇\n️"

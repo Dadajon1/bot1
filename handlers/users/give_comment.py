@@ -13,7 +13,7 @@ from keyboards.default.send_link import check_list, main_menu, okay_skip
 
 
 
-@dp.message_handler(text="Give Comment", state=Form.GetInfo)
+@dp.message_handler(text="Give Comment", state="*")
 async def send_link_message(msg: types.Message):
     await msg.answer("Please send your username.")
     await Form.GiveComment.set()

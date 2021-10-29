@@ -4,7 +4,7 @@ from aiogram import types
 
 from states.UserState import Form
 
-@dp.message_handler(text='Service Policy', state=Form.GetInfo)
+@dp.message_handler(text='Service Policy', state="*")
 async def privacy_policy(msg: types.Message):
     await msg.answer(
         text="""<b>👑 📜 Rules 📜 👑

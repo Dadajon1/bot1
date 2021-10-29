@@ -4,7 +4,7 @@ from aiogram import types
 from states.UserState import Form
 
 
-@dp.message_handler(text='Invite Friends', state=Form.GetInfo)
+@dp.message_handler(text='Invite Friends', state="*")
 async def invite_link(msg: types.Message):
     USER_ID = msg.chat.id
     text = f"""❇️ Invite Friend  ❇️

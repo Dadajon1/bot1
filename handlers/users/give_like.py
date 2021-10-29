@@ -10,7 +10,7 @@ from utils.db_api import users_db, like_link_db
 from keyboards.default.send_link import main_menu, okay_skip
 
 
-@dp.message_handler(text="Give Like", state=Form.GetInfo)
+@dp.message_handler(text="Give Like", state="*")
 async def send_link_message(msg: types.Message):
     await msg.answer("Please send your username.")
     await Form.GiveLike.set()
@@ -78,9 +78,10 @@ async def check_user(msg: types.Message, state: FSMContext):
         soup = BeautifulSoup(driver.page_source, 'html.parser')
 
         img = soup.find('img', class_='FFVAD')
-        img_url = img['src']
-        print(img_url)
 
+        img_url = img['src']
+
+        print(img_url)
         profile = instaloader.Profile.from_username(L.context, user)
         print(profile.get_posts())
 

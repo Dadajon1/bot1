@@ -11,7 +11,7 @@ from keyboards.default.send_link import check_list, main_menu, okay_skip
 
 
 
-@dp.message_handler(text="Give Like", state=Form.GetInfo)
+@dp.message_handler(text="Give Like", state="*")
 async def send_link_message(message: types.Message, state: FSMContext):
     text = "Follow the link below and write Comment📃️\n"
     text += "Please do not try to cheat, everything will be checked.\n\n"

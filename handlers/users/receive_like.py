@@ -8,14 +8,20 @@ from utils.db_api import users_db, like_link_db
 from states.UserState import Form
 
 
-@dp.message_handler(text="Receive Like", state=Form.GetInfo)
+@dp.message_handler(text="Receive Like", state="*")
 async def receive_like(msg: types.Message):
-    balance = users_db.find_one({'user_id': msg.chat.id})
-
+    try:
+        balance = users_db.find_one({'user_id': msg.chat.id})
+        print("---", balance['coin'])
+    except:
+        balance = users_db.find_and_modify({'user_id': msg.chat.id}, {'$set': {"coin": 10}}, upsert=False)
+        print("---", balance)
+        balance = users_db.find_one({'user_id': msg.chat.id})
     text = f"❇️ Receive Like ❤️\n" \
            f"------------------------------\n" \
            f"💰Your Balance: {balance['coin']}\n" \
-           f"📈: How many comments do you want⁉\n️"
+           f"------------------------------\n" \
+           f"📈: How many likes do you want⁉️\n️"
     await msg.reply(text=text, reply_markup=like_key)
     await Form.RecieveLike.set()
 
@@ -64,7 +70,7 @@ async def add_username(msg: types.Message, state: FSMContext):
         users_db.find_and_modify({'user_id': msg.chat.id}, {'$set': {'insta_username': username}}, upsert=False,
                                  full_response=True)
         like_link_db.find_and_modify({'user_id': msg.chat.id}, {'$set': {'username': username}}, upsert=False,
-                                full_response=True)
+                                     full_response=True)
 
         user_info = users_db.find_one({'user_id': msg.chat.id})
         text = f"❇️ Your Link ❇️ \n" \
@@ -87,15 +93,15 @@ async def get_comment_link(msg: types.Message, state: FSMContext):
                f"Amount {data['num']}\n" \
                f"Link: {msg.text}\n\n"
         like_link_db.update_one({'user_id': msg.from_user.id},
-                           {'$set': {
-                               "link": data['link'],
-                               "count": data['num'],
-                               "username": data['username'],
-                               "is_like": True,
-                               "view_list": [msg.chat.id],
-                           }
-                           }, upsert=True)
+                                {'$set': {
+                                    "link": data['link'],
+                                    "count": data['num'],
+                                    "username": data['username'],
+                                    "is_like": True,
+                                    "view_list": [msg.chat.id],
+                                }
+                                }, upsert=True)
 
         await msg.reply(text=text)
-        await msg.answer("Qabul qilindi.", reply_markup=main_menu)
+        await msg.answer("Accept!.", reply_markup=main_menu)
         await Form.GetInfo.set()
