@@ -1,6 +1,6 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
-from keyboards.inline.callback_data import comment_callback
+from keyboards.inline.callback_data import comment_callback, buy_callback
 
 payment_key = InlineKeyboardMarkup(inline_keyboard=[
     [
@@ -47,4 +47,17 @@ invite_friends = InlineKeyboardMarkup(
             InlineKeyboardButton(text="Share Friends", switch_inline_query_current_chat='')
         ]
     ]
+)
+
+buy_coins = InlineKeyboardMarkup(
+    inline_keyboard=[
+        [
+            InlineKeyboardButton(text="80 💰 = $5", callback_data=buy_callback.new(5)),
+            InlineKeyboardButton(text="165 💰 = $10", callback_data=buy_callback.new(10)),
+        ],
+        [
+            InlineKeyboardButton(text="255 💰 = $15", callback_data=buy_callback.new(15)),
+            InlineKeyboardButton(text="350 💰 = $20", callback_data=buy_callback.new(20)),
+        ]
+    ],
 )

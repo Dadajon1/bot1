@@ -27,6 +27,9 @@ main_menu = ReplyKeyboardMarkup(
         ],
         [
             KeyboardButton(text="Payment History"),
+            KeyboardButton(text="Buy Coins"),
+        ],
+        [
             KeyboardButton(text="Service Policy")
         ]
     ],
