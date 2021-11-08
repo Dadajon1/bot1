@@ -17,6 +17,9 @@ comment_key = InlineKeyboardMarkup(
         [
             InlineKeyboardButton(text="15 Comments", callback_data="comment:comment15"),
             InlineKeyboardButton(text="20 Comments", callback_data="comment:comment20"),
+        ],[
+            InlineKeyboardButton(text="30 Comments", callback_data="comment:comment30"),
+            InlineKeyboardButton(text="50 Comments", callback_data="comment:comment50"),
         ]
     ]
 )
@@ -37,6 +40,10 @@ like_key = InlineKeyboardMarkup(
         [
             InlineKeyboardButton(text="15 Like", callback_data="like:like15"),
             InlineKeyboardButton(text="20 Like", callback_data="like:like20"),
+        ],
+        [
+            InlineKeyboardButton(text="30 Like", callback_data="like:like30"),
+            InlineKeyboardButton(text="50 Like", callback_data="like:like50"),
         ]
     ]
 )

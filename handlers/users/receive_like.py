@@ -38,7 +38,10 @@ async def get_comment(call: CallbackQuery, state: FSMContext):
             num += 15
         if call.data == 'like:like20':
             num += 20
-
+        if call.data == 'like:like30':
+            num += 30
+        if call.data == 'like:like50':
+            num += 50
         data['num'] = num
 
         await call.answer(cache_time=60)
@@ -46,7 +49,7 @@ async def get_comment(call: CallbackQuery, state: FSMContext):
         print(user_info)
         if 'insta_username' not in user_info.keys():
             print("1")
-            await call.message.answer(text="Iltimos Instagram username yuboring")
+            await call.message.answer(text="Please send your username without @")
             await Form.AddUsernameLike.set()
         else:
             data['username'] = user_info['insta_username']
@@ -101,7 +104,9 @@ async def get_comment_link(msg: types.Message, state: FSMContext):
                                     "view_list": [msg.chat.id],
                                 }
                                 }, upsert=True)
-
+        coin = users_db.find_one()
+        coin = coin['coin']
+        coin -= data['num']
         await msg.reply(text=text)
-        await msg.answer("Accept!.", reply_markup=main_menu)
+        await msg.answer("Link Accepted", reply_markup=main_menu)
         await Form.GetInfo.set()

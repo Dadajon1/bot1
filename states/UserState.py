@@ -18,4 +18,5 @@ class Form(StatesGroup):
     SetCommentText = State()
     SetLikeText = State()
     SendComment = State()
+    SendLike = State()
     PayQuery = State()

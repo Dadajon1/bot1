@@ -1,20 +1,24 @@
 import instaloader
 from aiogram import types
 from bs4 import BeautifulSoup
+from instaloader import Post
 from selenium import webdriver
 from aiogram.dispatcher import FSMContext
 
 from loader import dp
 from states.UserState import Form
 from utils.db_api import users_db, like_link_db
-from keyboards.default.send_link import main_menu, okay_skip
+from keyboards.default.send_link import main_menu, okay_skip, check_list
 
 
 @dp.message_handler(text="Give Like", state="*")
 async def send_link_message(msg: types.Message):
-    await msg.answer("Please send your username.")
+    await msg.answer("Please send your username without @")
     await Form.GiveLike.set()
 
+@dp.message_handler(text="Skip", state="*")
+async def send_link_message(msg: types.Message):
+    await Form.GetInfo.set()
 
 @dp.message_handler(state=Form.GiveLike)
 async def get_user(msg: types.Message, state: FSMContext):
@@ -55,22 +59,28 @@ async def get_user(msg: types.Message, state: FSMContext):
             await msg.answer(text=text, reply_markup=okay_skip)
             await Form.CheckLike.set()
         except:
-            text = "Hozircha linklar yo'q"
+            text = "No links yet"
             await msg.answer(text=text)
             await Form.GetInfo.set()
 
+@dp.message_handler(state=Form.CheckLike, text="Okay")
+async def send_comment(msg: types.Message, state: FSMContext):
+    async with state.proxy() as data:
+        await msg.answer("Note: Please open post link and put like for this post.")
+        await msg.answer("Press the `I'm Done` button after you did it.\n⚠️ Limitation: You have only 5 minutes to finish this comment. Otherwise it will be given to someone else!", reply_markup=check_list)
+        await Form.SendLike.set()
 
-@dp.message_handler(state=Form.CheckLike, text='Okay')
+@dp.message_handler(state=Form.SendLike, text="I'm Done")
 async def check_user(msg: types.Message, state: FSMContext):
     async with state.proxy() as data:
         username = data["post_username"]
         print(data)
         await msg.answer("The verification process may take some time. Please wait.")
         L = instaloader.Instaloader()
-        L.load_session_from_file('bexruz.nutfilloyev',
-                                 '/Users/yoshlikmedia/Projects/Navbatchilik-bot/handlers/users/instaloader.session')
+        L.load_session_from_file('haminmoshotmi',
+                                 'session-haminmoshotmi')
 
-        driver = webdriver.Chrome('/Users/yoshlikmedia/Projects/Navbatchilik-bot/chromedriver')
+        driver = webdriver.Chrome()
         link = data['link']
         user = data['user']
         driver.get(link)
@@ -78,44 +88,28 @@ async def check_user(msg: types.Message, state: FSMContext):
         soup = BeautifulSoup(driver.page_source, 'html.parser')
 
         img = soup.find('img', class_='FFVAD')
-
         img_url = img['src']
-
         print(img_url)
-        profile = instaloader.Profile.from_username(L.context, user)
-        print(profile.get_posts())
 
-        for post in profile.get_posts():
-            like_list = []
-            # comment_list = []
-            print(post.url)
-            if post.url[:160] == img_url[:160]:
-                post_likes = post.get_likes()
-                # post_comments = post.get_comments()
-
-                for likee in post_likes:
-                    like_list.append(likee.username)
-                #
-                # for comment in post_comments:
-                #     # print(comment.owner.username)
-                #     comment_list.append(comment.owner.username)
-                print("=" * 100)
-                break
-
-        if username in like_list:
-            send_text = "Like ✅\n\n"
-        else:
-            send_text = "Like ❌\n\n"
+        post = Post.from_shortcode(L.context, link[28:39])
+        like_list = []
+        post_com = post.get_likes()
+        for like in post_com:
+            like_list.append(like.username)
 
         if username in like_list:
             coin = users_db.find_one()
             coin = coin['coin']
-            coin += 10
+            coin += 1
             users_db.find_and_modify({'user_id': msg.chat.id}, {'$set': {'coin': coin}}, upsert=False,
                                      full_response=True)
-            send_text += "coin: {}\n".format(coin)
+            send_text = "❇️ Point +10 ❇️\n"
+            send_text += "------------------------------\n"
+            send_text += "💰 New Balance:  {}\n".format(coin)
+            send_text += "⚙️ ID: {}\n".format(msg.from_user.id)
+            send_text += "------------------------------\n"
         else:
-            send_text += "Please fulfill condition.\n"
+            send_text = "😟 You didn't like this post so you can't get a coin. Please try again inside Menu.\n"
 
         await msg.answer(send_text, reply_markup=main_menu)
         await Form.GetInfo.set()

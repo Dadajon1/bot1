@@ -53,8 +53,8 @@ async def get_coins(call: types.CallbackQuery, state: FSMContext):
             "payer": {
                 "payment_method": "paypal"},
             "redirect_urls": {
-                "return_url": "http://localhost:3000/payment/execute",
-                "cancel_url": "http://localhost:3000/"},
+                "return_url": "http://paypal.com/payment/execute",
+                "cancel_url": "http://paypal.com/"},
             "transactions": [{
                 "item_list": {
                     "items": [{

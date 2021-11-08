@@ -12,5 +12,5 @@ async def invite_link(msg: types.Message):
 😘 You are the best friend anyone can wish for.
 ------------------------------
 Send this link to your friend ⤵️
-📎 t.me/shodmonboy_bot?start={USER_ID}"""
+📎 t.me/instaengagement_bot?start={USER_ID}"""
     await msg.reply(text=text)

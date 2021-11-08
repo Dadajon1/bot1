@@ -3,6 +3,7 @@ import random
 import instaloader
 from aiogram import types
 from bs4 import BeautifulSoup
+from instaloader import Post
 from selenium import webdriver
 from aiogram.dispatcher import FSMContext
 
@@ -15,8 +16,12 @@ from keyboards.default.send_link import check_list, main_menu, okay_skip
 
 @dp.message_handler(text="Give Comment", state="*")
 async def send_link_message(msg: types.Message):
-    await msg.answer("Please send your username.")
+    await msg.answer("Please send your username without @")
     await Form.GiveComment.set()
+
+@dp.message_handler(text="Skip", state="*")
+async def send_link_message(msg: types.Message):
+    await Form.GetInfo.set()
 
 @dp.message_handler(state=Form.GiveComment)
 async def get_user(msg: types.Message, state: FSMContext):
@@ -60,7 +65,7 @@ async def get_user(msg: types.Message, state: FSMContext):
             await msg.answer(text=text, reply_markup=okay_skip)
             await Form.SendComment.set()
         except:
-            text = "Hozircha linklar yo'q"
+            text = "No links yet"
             await msg.answer(text=text)
             await Form.GetInfo.set()
 
@@ -80,10 +85,10 @@ async def check_user(msg: types.Message, state: FSMContext):
         print(data)
         await msg.answer("The verification process may take some time. Please wait.")
         L = instaloader.Instaloader()
-        L.load_session_from_file('bexruz.nutfilloyev',
-                                 '/Users/yoshlikmedia/Projects/Navbatchilik-bot/handlers/users/instaloader.session')
+        L.load_session_from_file('haminmoshotmi',
+                                 'session-haminmoshotmi')
 
-        driver = webdriver.Chrome('/Users/yoshlikmedia/Projects/Navbatchilik-bot/chromedriver')
+        driver = webdriver.Chrome()
         link = data['link']
         user = data['user']
         driver.get(link)
@@ -94,40 +99,24 @@ async def check_user(msg: types.Message, state: FSMContext):
         img_url = img['src']
         print(img_url)
 
-        profile = instaloader.Profile.from_username(L.context, user)
-        print(profile.get_posts())
-
-        for post in profile.get_posts():
-            # like_list = []
-            comment_list = []
-            print(post.url)
-            if post.url[:160] == img_url[:160]:
-                # post_likes = post.get_likes()
-                post_comments = post.get_comments()
-
-                # for likee in post_likes:
-                #     like_list.append(likee.username)
-
-                for comment in post_comments:
-                    # print(comment.owner.username)
-                    comment_list.append(comment.owner.username)
-                print("=" * 100)
-                break
-
-        if username in comment_list:
-            send_text = "Comment ✅\n\n"
-        else:
-            send_text = "Comment ❌\n\n"
+        post = Post.from_shortcode(L.context, link[28:39])
+        comment_list = []
+        post_com = post.get_comments()
+        for comment in post_com:
+            comment_list.append(comment.owner.username)
 
         if username in comment_list:
             coin = users_db.find_one()
             coin = coin['coin']
-            coin += 10
-            users_db.find_and_modify({'user_id': msg.chat.id}, {'$set': {'coin': coin}}, upsert=False,
-                                     full_response=True)
-            send_text += "coin: {}\n".format(coin)
+            coin += 1
+            users_db.find_and_modify({'user_id': msg.chat.id}, {'$set': {'coin': coin}}, upsert=False, full_response=True)
+            send_text = "❇️ Point +10 ❇️\n"
+            send_text += "------------------------------\n"
+            send_text += "💰 New Balance:  {}\n".format(coin)
+            send_text += "⚙️ ID: {}\n".format(msg.from_user.id)
+            send_text += "------------------------------\n"
         else:
-            send_text += "Please fulfill condition.\n"
+            send_text = "😟 You didn't comment this post so you can't get a coin. Please try again inside Menu.\n"
 
         await msg.answer(send_text, reply_markup=main_menu)
         await Form.GetInfo.set()

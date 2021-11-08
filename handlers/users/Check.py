@@ -3,8 +3,9 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 
 L = instaloader.Instaloader()
-L.login("bexruz.nutfilloyev", "112142249210406")
-driver = webdriver.Chrome('/Users/yoshlikmedia/Projects/Navbatchilik-bot/chromedriver')
+L.login("haminmoshotmi", "parolnibermayman")
+driver = webdriver.Chrome()
+
 
 def comment_like_list(link, user):
     driver.get(link)
@@ -42,7 +43,6 @@ def comment_like_list(link, user):
 
 if __name__=="__main__":
     username = "yoshlik_media"
-    # print(comment_like_list("https://www.instagram.com/p/CQv6euDN8iL/", "yoshlik_media"))
     like, comment = comment_like_list("https://www.instagram.com/p/CQv6euDN8iL/", "yoshlik_media")
 
     if username in like:
@@ -53,3 +53,4 @@ if __name__=="__main__":
         print("Comment yozmagan")
     else:
         print("Yemadi")
+    L.save_session_to_file()

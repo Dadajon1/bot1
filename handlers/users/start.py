@@ -29,9 +29,10 @@ async def bot_start(message: types.Message, state: FSMContext):
 
         else:
             textback = "Welcome {}".format(message.from_user.first_name)
+            balance = users_db.find_and_modify({'user_id': message.chat.id}, {'$set': {"coin": 10}}, upsert=False)
         print(textback)
     try:
-        await bot.send_message(args, "Sizning do'stingiz qo'shildi")
+        await bot.send_message(args, "Your friend has joined")
     except:
         await message.answer(textback, reply_markup=main_menu)
         await Form.GetInfo.set()
