@@ -84,7 +84,7 @@ async def add_username(msg: types.Message, state: FSMContext):
                f"------------------------------\n" \
                f"📎 Send me the link to your post ⬇️"
         await msg.answer(text=text)
-        await Form.GetCommentLink.set()
+        await Form.GetLikeLink.set()
 
 
 @dp.message_handler(state=Form.GetLikeLink)
@@ -108,5 +108,5 @@ async def get_comment_link(msg: types.Message, state: FSMContext):
         coin = coin['coin']
         coin -= data['num']
         await msg.reply(text=text)
-        await msg.answer("Link Accepted", reply_markup=main_menu)
+        await msg.answer("Like Accepted", reply_markup=main_menu)
         await Form.GetInfo.set()

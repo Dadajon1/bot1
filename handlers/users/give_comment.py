@@ -86,18 +86,10 @@ async def check_user(msg: types.Message, state: FSMContext):
         await msg.answer("The verification process may take some time. Please wait.")
         L = instaloader.Instaloader()
         L.load_session_from_file('haminmoshotmi',
-                                 'session-haminmoshotmi')
+                                 '/home/ubuntu/.config/instaloader/session-haminmoshotmi')
 
-        driver = webdriver.Chrome()
         link = data['link']
         user = data['user']
-        driver.get(link)
-
-        soup = BeautifulSoup(driver.page_source, 'html.parser')
-
-        img = soup.find('img', class_='FFVAD')
-        img_url = img['src']
-        print(img_url)
 
         post = Post.from_shortcode(L.context, link[28:39])
         comment_list = []

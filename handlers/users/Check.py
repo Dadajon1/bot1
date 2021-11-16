@@ -1,44 +1,29 @@
 import instaloader
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from instaloader import Post
 
 L = instaloader.Instaloader()
-L.login("haminmoshotmi", "parolnibermayman")
-driver = webdriver.Chrome()
+# L.login("yoshlik_media", "112142249Aviator!")
+# driver = webdriver.Chrome()
+L.load_session_from_file('haminmoshotmi',
+                                 '/home/ubuntu/.config/instaloader/session-haminmoshotmi')
 
 
 def comment_like_list(link, user):
-    driver.get(link)
-    soup = BeautifulSoup(driver.page_source, 'html.parser')
-    img = soup.find('img', class_='FFVAD')
-    try:
-        img_url = img['src']
-        print(img_url)
-    except Exception as ex:
-        print(ex)
 
 
-    profile = instaloader.Profile.from_username(L.context, user)
-    print(profile.get_posts())
 
-    for post in profile.get_posts():
-        like_list = []
-        comment_list = []
-        print(post.url)
-        if post.url[:160] == img_url[:160]:
-            post_likes = post.get_likes()
-            post_comments = post.get_comments()
+    post = Post.from_shortcode(L.context, link[28:39])
+    comment_list = []
+    post_com = post.get_comments()
+    for comment in post_com:
+        comment_list.append(comment.owner.username)
 
-            for likee in post_likes:
-                # print(likee.username)
-                like_list.append(likee.username)
-
-            for comment in post_comments:
-                # print(comment.owner.username)
-                comment_list.append(comment.owner.username)
-            print("=" * 50)
-            break
-
+    like_list = []
+    post_com = post.get_likes()
+    for like in post_com:
+        like_list.append(like.username)
     return like_list, comment_list
 
 if __name__=="__main__":
@@ -53,4 +38,4 @@ if __name__=="__main__":
         print("Comment yozmagan")
     else:
         print("Yemadi")
-    L.save_session_to_file()
+    comment_like_list("https://www.instagram.com/p/CQv6euDN8iL/", "yoshlik_media")

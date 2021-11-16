@@ -135,6 +135,6 @@ async def set_comment_text(msg: types.Message, state: FSMContext):
         coin = users_db.find_one()
         coin = coin['coin']
         coin -= data['num']
-        await msg.answer("Link Accepted!", reply_markup=main_menu)
+        await msg.answer("Comments Accepted!", reply_markup=main_menu)
         await Form.GetInfo.set()
 
