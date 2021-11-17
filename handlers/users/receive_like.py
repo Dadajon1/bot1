@@ -102,8 +102,8 @@ async def get_comment_link(msg: types.Message, state: FSMContext):
                                     "username": data['username'],
                                     "is_like": True,
                                     "view_list": [msg.chat.id],
-                                }
-                                }, upsert=True)
+                                        }
+                                    }, upsert=True)
         coin = users_db.find_one()
         coin = coin['coin']
         coin -= data['num']

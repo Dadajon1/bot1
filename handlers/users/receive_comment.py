@@ -106,11 +106,10 @@ async def get_comment_text(msg: types.Message, state: FSMContext):
     async with state.proxy() as data:
         text = """💬 Write Your Comments 💬
 ------------------------------
-🧠 Use \ (backward slash) and a number to number the comments.
-✳️ example (if I wanted 3 comments, here is how)
-\\1 You have a nice voice Beyonce
-\\2 I cannot wait for the new music to come out
-\\3 Can I get a free ticket to your concert?
+✳️ example (if I wanted 3 comments, here is how)\n
+You have a nice voice Beyoncen\n
+I cannot wait for the new music to come out\n
+Can I get a free ticket to your concert?\n
             
 👀 Double-check your comment’s spelling and grammar. Once you click the confirm button, you will not be able to make any more changes."""
         await msg.answer(text=text)
@@ -121,20 +120,23 @@ async def get_comment_text(msg: types.Message, state: FSMContext):
 async def set_comment_text(msg: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['comment'] = msg.text
-        comment_link_db.update_one({'user_id': msg.from_user.id},
-                               {'$set': {
-                                   "link": data['link'],
-                                   "comment": data['comment'].split('\n'),
-                                   "count": data['num'],
-                                   "username": data['username'],
-                                   "is_comment": True,
-                                   "view_list": [msg.chat.id],
-                               }
-                               }, upsert=True)
+        if len(data['comment'].split('\n')) <= 3:
+            comment_link_db.update_one({'user_id': msg.from_user.id},
+                                   {'$set': {
+                                       "link": data['link'],
+                                       "comment": data['comment'].split('\n'),
+                                       "count": data['num'],
+                                       "username": data['username'],
+                                       "is_comment": True,
+                                       "view_list": [msg.chat.id],
+                                   }
+                                   }, upsert=True)
 
-        coin = users_db.find_one()
-        coin = coin['coin']
-        coin -= data['num']
-        await msg.answer("Comments Accepted!", reply_markup=main_menu)
-        await Form.GetInfo.set()
-
+            coin = users_db.find_one()
+            coin = coin['coin']
+            coin -= data['num']
+            await msg.answer("Comments Accepted!", reply_markup=main_menu)
+            await Form.GetInfo.set()
+        else:
+            await msg.answer("Error, Pleaese try again!", reply_markup=main_menu)
+            await Form.GetInfo.set()
