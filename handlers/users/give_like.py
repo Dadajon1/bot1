@@ -52,7 +52,7 @@ async def get_user(msg: types.Message, state: FSMContext):
             text += "------------------------------\n"
             text += "📎 {}\n".format(link)
             text += "------------------------------\n"
-            text += "📝 I will send you a like 📝\n"
+            text += "Add Here is a link 👆\n"
             text += "🧠 Use your account {} 🧠\n".format(username)
             text += "------------------------------\n"
             text += "👍 Click “okay” for me to send the comment or click ❌ Skip if you want a different link.\n"
@@ -95,7 +95,7 @@ async def check_user(msg: types.Message, state: FSMContext):
             coin += 1
             users_db.find_and_modify({'user_id': msg.chat.id}, {'$set': {'coin': coin}}, upsert=False,
                                      full_response=True)
-            send_text = "❇️ Point +10 ❇️\n"
+            send_text = "❇️ Point +1 ❇️\n"
             send_text += "------------------------------\n"
             send_text += "💰 New Balance:  {}\n".format(coin)
             send_text += "⚙️ ID: {}\n".format(msg.from_user.id)
