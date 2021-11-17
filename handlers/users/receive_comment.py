@@ -48,21 +48,9 @@ async def get_comment(call: CallbackQuery, state: FSMContext):
         await call.answer(cache_time=60)
         user_info = users_db.find_one({'user_id': call.message.chat.id})
         print(user_info)
-        if 'insta_username' not in user_info.keys():
-            print("1")
-            await call.message.answer(text="Please send your username without @")
-            await Form.AddUsername.set()
-        else:
-            data['username'] = user_info['insta_username']
-            text = f"❇️ Your Link ❇️ \n" \
-                   f"------------------------------ \n" \
-                   f"👤 The post must be for the <code>{user_info['insta_username']}</code>\n" \
-                   f"🛒 Amount: {num}\n" \
-                   f"⚠️ Remove UTM source codes (Learn)\n" \
-                   f"------------------------------\n" \
-                   f"📎 Send me the link to your post ⬇️"
-            await call.message.answer(text=text)
-            await Form.GetCommentLink.set()
+        await call.message.answer(text="Please send your username without @")
+        await Form.AddUsername.set()
+
 
 
 @dp.message_handler(state=Form.AddUsername)
