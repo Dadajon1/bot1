@@ -108,7 +108,7 @@ Can I get a free ticket to your concert?\n
 async def set_comment_text(msg: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['comment'] = msg.text
-        if len(data['comment'].split('\n')) <= 3:
+        if len(data['comment'].split('\n')) <= data['num']:
             comment_link_db.update_one({'user_id': msg.from_user.id},
                                    {'$set': {
                                        "link": data['link'],
