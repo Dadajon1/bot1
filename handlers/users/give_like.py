@@ -13,7 +13,7 @@ from keyboards.default.send_link import main_menu, okay_skip, check_list
 
 @dp.message_handler(text="Give Like", state="*")
 async def send_link_message(msg: types.Message):
-    await msg.answer("Please send your username without @")
+    await msg.answer("Please send your username correctly and without @")
     await Form.GiveLike.set()
 
 @dp.message_handler(text="Skip", state="*")

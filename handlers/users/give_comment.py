@@ -16,7 +16,7 @@ from keyboards.default.send_link import check_list, main_menu, okay_skip
 
 @dp.message_handler(text="Give Comment", state="*")
 async def send_link_message(msg: types.Message):
-    await msg.answer("Please send your username without @")
+    await msg.answer("Please send your username correctly and without @")
     await Form.GiveComment.set()
 
 @dp.message_handler(text="Skip", state="*")
