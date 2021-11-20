@@ -36,3 +36,4 @@ async def bot_start(message: types.Message, state: FSMContext):
     except:
         await message.answer(textback, reply_markup=main_menu)
         await Form.GetInfo.set()
+

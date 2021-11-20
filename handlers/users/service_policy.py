@@ -25,3 +25,6 @@ async def privacy_policy(msg: types.Message):
 8️⃣ Read those 7 rules again, we are very serious. We will ban you if you break them.
 ------------------------------</b>""",
         reply_markup=main_menu)
+@dp.message_handler(content_types=types.ContentTypes.TEXT, state='*')
+async def any_text(msg: types.Message):
+    await msg.answer(text="Error input, Please try again.", reply_markup=main_menu)
