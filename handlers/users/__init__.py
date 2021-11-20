@@ -9,6 +9,7 @@ from . import give_comment
 from . import get_link
 from . import invite_friends
 # from . import echo
-from . import service_policy
+
 from . import payment_history
 from . import paypal
+from . import service_policy
