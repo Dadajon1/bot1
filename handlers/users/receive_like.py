@@ -1,4 +1,4 @@
-from aiogram.dispatcher import FSMContext
+from aiogram.dispatcher import FSMContext, filters
 from aiogram.types import CallbackQuery
 from keyboards.default import main_menu
 from keyboards.inline.payment import like_key
@@ -74,7 +74,7 @@ async def add_username(msg: types.Message, state: FSMContext):
         await Form.GetLikeLink.set()
 
 
-@dp.message_handler(text=r'(https?:\/\/(?:www\.)?instagram\.com\/p\/([^/?#&]+)).*', state=Form.GetLikeLink)
+@dp.message_handler(filters.Regexp(r'(https?:\/\/(?:www\.)?instagram\.com\/p\/([^/?#&]+)).*'), state=Form.GetLikeLink)
 async def get_comment_link(msg: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['link'] = msg.text
