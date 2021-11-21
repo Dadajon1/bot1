@@ -76,7 +76,7 @@ async def add_username(msg: types.Message, state: FSMContext):
         await Form.GetCommentLink.set()
 
 
-@dp.message_handler(state=Form.GetCommentLink)
+@dp.message_handler(filters.Regexp(r'(https?:\/\/(?:www\.)?instagram\.com\/p\/([^/?#&]+)).*'), state=Form.GetCommentLink)
 async def get_comment_link(msg: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['link'] = msg.text
