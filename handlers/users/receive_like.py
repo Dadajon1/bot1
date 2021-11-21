@@ -74,7 +74,7 @@ async def add_username(msg: types.Message, state: FSMContext):
         await Form.GetLikeLink.set()
 
 
-@dp.message_handler(state=Form.GetLikeLink)
+@dp.message_handler(text=r'/(?:(?:http|https):\/\/)?(?:www.)?(?:instagram.com|instagr.am|instagr.com)\/(\w+)/igm', state=Form.GetLikeLink)
 async def get_comment_link(msg: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['link'] = msg.text
