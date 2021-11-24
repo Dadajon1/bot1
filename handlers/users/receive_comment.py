@@ -94,10 +94,10 @@ async def get_comment_text(msg: types.Message, state: FSMContext):
     async with state.proxy() as data:
         text = """💬 Write Your Comments 💬
 ------------------------------
-✳️ example (if I wanted 3 comments, here is how)\n
-You have a nice voice Beyoncen\n
-I cannot wait for the new music to come out\n
-Can I get a free ticket to your concert?\n
+✳️ example (if I wanted 3 comments, here is how)
+You have a nice voice Beyoncen
+I cannot wait for the new music to come out
+Can I get a free ticket to your concert?
             
 👀 Double-check your comment’s spelling and grammar. Once you click the confirm button, you will not be able to make any more changes."""
         await msg.answer(text=text)
