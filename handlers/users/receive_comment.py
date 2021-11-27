@@ -47,7 +47,8 @@ async def get_comment(call: CallbackQuery, state: FSMContext):
         if balance['coin'] >= num:
             await call.message.answer(text="Please send your username correctly and without @")
             await Form.AddUsername.set()
-
+        else:
+            await call.message.reply(text='Your balance is not enough to submit this order!')
 
 
 @dp.message_handler(state=Form.AddUsername)
