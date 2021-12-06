@@ -53,8 +53,8 @@ async def get_coins(call: types.CallbackQuery, state: FSMContext):
             "payer": {
                 "payment_method": "paypal"},
             "redirect_urls": {
-                "return_url": "http://paypal.com/payment/execute",
-                "cancel_url": "http://paypal.com/"},
+                "return_url": "https://t.me/instaengagement_bot",
+                "cancel_url": "https://t.me/instaengagement_bot"},
             "transactions": [{
                 "item_list": {
                     "items": [{
@@ -76,11 +76,12 @@ async def get_coins(call: types.CallbackQuery, state: FSMContext):
         for link in payment.links:
             if link.rel == "approval_url":
                 approval_url = str(link.href)
-                print("Redirect for approval: %s" % (approval_url))
+                id = approval_url.split('=')[-1]
+                print("Redirect for approval: %s" % (id))
 
                 payment_key = InlineKeyboardMarkup(inline_keyboard=[
                     [
-                        InlineKeyboardButton(text="Payment", url=approval_url)
+                        InlineKeyboardButton(text="Payment", url=f'https://www.paypal.com/checkoutnow?token={id}')
                     ]
                 ])
                 await call.message.edit_text(text, reply_markup=payment_key)
