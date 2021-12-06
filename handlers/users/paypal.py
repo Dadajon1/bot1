@@ -17,7 +17,6 @@ paypalrestsdk.configure({
 
 @dp.message_handler(text="Buy Coins", state="*")
 async def send_coins_button(msg: types.Message):
-    print("Buy Coins qismiga kirildi...3")
     await msg.answer(text="How many coins do you want to buy?"
                     "\n\nOnce you pay online, you'll have coins to submit new orders."
                     "\n\nPlease select from bellow options:", reply_markup=buy_coins)
@@ -26,7 +25,6 @@ async def send_coins_button(msg: types.Message):
 
 @dp.callback_query_handler(text_contains="coin", state=Form.PayQuery)
 async def get_coins(call: types.CallbackQuery, state: FSMContext):
-    print("Query qismiga kirildi .... ")
     async with state.proxy() as data:
         num = 0
         coins = 0
@@ -42,7 +40,7 @@ async def get_coins(call: types.CallbackQuery, state: FSMContext):
         if call.data == 'coin:20':
             num += 20
             coins += 350
-        data['num'] = num
+        data['num'] = num * 1.1
         data['coins'] = coins
         # await call.message.answer(text=num)
         text = f"You want to add {coins} coins to your account. You will have to pay ${num} USD and you will also pay a 10% service fee. Your total payment invoice is ${num}.5 USD.\n\n"
@@ -91,36 +89,4 @@ async def get_coins(call: types.CallbackQuery, state: FSMContext):
 
 
 
-# payment = paypalrestsdk.Payment.find("PAY-57363176S1057143SKE2HO3A")
-# print(payment)
-#
-# execute_payment_json = {
-#     "payer_id": "433751560",
-#     "transactions": [{
-#         "amount": {
-#             "total": "35.07",
-#             "currency": "USD",
-#             "details": {
-#                 "subtotal": "30.00",
-#                 "tax": "0.07",
-#                 "shipping": "2.00",
-#                 "handling_fee": "1.00",
-#                 "shipping_discount": "1.00",
-#                 "insurance": "1.00"
-#             }
-#         }
-#     }]
-# }
-#
-# if payment.execute(execute_payment_json):  # return True or False
-#   print("Payment[%s] execute successfully"%(payment.id))
-# else:
-#   print(payment.error)
-
-# payment_history = paypalrestsdk.Payment.all()
-# # print(payment_history.payments)
-#
-# print("List Payment:")
-# for payment in payment_history.payments:
-#     print("  -> Payment[%s]" % (payment.id))
 

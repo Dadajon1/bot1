@@ -67,7 +67,7 @@ async def get_user(msg: types.Message, state: FSMContext):
 async def send_comment(msg: types.Message, state: FSMContext):
     async with state.proxy() as data:
         await msg.answer("Note: Please open post link and put like for this post.")
-        await msg.answer("Press the `I'm Done` button after you did it.\n⚠️ Limitation: You have only 5 minutes to finish this comment. Otherwise it will be given to someone else!", reply_markup=check_list)
+        await msg.answer("Press the `I'm Done` button after you did it.\n⚠️ Limitation: You have only 5 minutes to finish this like. Otherwise it will be given to someone else!", reply_markup=check_list)
         await Form.SendLike.set()
 
 @dp.message_handler(state=Form.SendLike, text="I'm Done")
@@ -95,7 +95,7 @@ async def check_user(msg: types.Message, state: FSMContext):
             coin += 1
             users_db.find_and_modify({'user_id': msg.chat.id}, {'$set': {'coin': coin}}, upsert=False,
                                      full_response=True)
-            send_text = "❇️ Point +1 ❇️\n"
+            send_text = "❇️ Coin +1 ❇️\n"
             send_text += "------------------------------\n"
             send_text += "💰 New Balance:  {}\n".format(coin)
             send_text += "⚙️ ID: {}\n".format(msg.from_user.id)

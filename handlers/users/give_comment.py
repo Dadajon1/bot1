@@ -102,7 +102,7 @@ async def check_user(msg: types.Message, state: FSMContext):
             coin = coin['coin']
             coin += 1
             users_db.find_and_modify({'user_id': msg.chat.id}, {'$set': {'coin': coin}}, upsert=False, full_response=True)
-            send_text = "❇️ Point +1 ❇️\n"
+            send_text = "❇️ Coin +1 ❇️\n"
             send_text += "------------------------------\n"
             send_text += "💰 New Balance:  {}\n".format(coin)
             send_text += "⚙️ ID: {}\n".format(msg.from_user.id)
