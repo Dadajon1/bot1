@@ -49,6 +49,8 @@ async def get_comment(call: CallbackQuery, state: FSMContext):
         user_info = users_db.find_one({'user_id': call.message.chat.id})
         print(user_info)
         if balance['coin'] >= num:
+            users_db.update_one({'user_id': call.message.chat.id},
+                                {'$set': {'coin': balance['coin'] - data['num']}}, upsert=True)
             await call.message.answer(text="Please send your username correctly and without @")
             await Form.AddUsernameLike.set()
         else:
