@@ -126,5 +126,5 @@ async def set_comment_text(msg: types.Message, state: FSMContext):
             await msg.answer("Comments Accepted!", reply_markup=main_menu)
             await Form.GetInfo.set()
         else:
-            await msg.answer("Error, Pleaese try again!", reply_markup=main_menu)
-            await Form.GetInfo.set()
+            await msg.answer("Error, Pleaese try again!")
+            await set_comment_text()
