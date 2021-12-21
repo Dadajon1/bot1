@@ -20,6 +20,7 @@ async def send_link_message(msg: types.Message):
 async def send_link_message(msg: types.Message):
     await Form.GetInfo.set()
 
+@dp.message_handler(state=Form.CheckLike, text="Skip")
 @dp.message_handler(state=Form.GiveLike)
 async def get_user(msg: types.Message, state: FSMContext):
     async with state.proxy() as data:
