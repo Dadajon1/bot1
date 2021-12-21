@@ -19,10 +19,11 @@ async def send_link_message(msg: types.Message):
     await msg.answer("Please send your username correctly and without @")
     await Form.GiveComment.set()
 
-@dp.message_handler(text="Skip", state="*")
-async def send_link_message(msg: types.Message):
-    await Form.GetInfo.set()
+# @dp.message_handler(text="Skip", state="*")
+# async def send_link_message(msg: types.Message):
+#     await Form.GetInfo.set()
 
+@dp.message_handler(state=Form.SendComment, text="Skip")
 @dp.message_handler(state=Form.GiveComment)
 async def get_user(msg: types.Message, state: FSMContext):
     async with state.proxy() as data:
