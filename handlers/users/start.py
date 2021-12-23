@@ -41,6 +41,8 @@ async def bot_start(message: types.Message, state: FSMContext):
         coin += 10
         users_db.find_and_modify({'user_id': int(args)}, {'$set': {'coin': coin}}, upsert=True)
         await bot.send_message(args, "Your balance: {}".format(coin))
+        await message.answer(textback, reply_markup=main_menu)
+        await Form.GetInfo.set()
     except:
         await message.answer(textback, reply_markup=main_menu)
         await Form.GetInfo.set()
