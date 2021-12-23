@@ -33,6 +33,10 @@ async def bot_start(message: types.Message, state: FSMContext):
         print(textback)
     try:
         await bot.send_message(args, "Your friend has joined")
+        req_db = users_db.find_one({'user_id': message.from_user.id})
+        coin = req_db['coin']
+        coin += 10
+        users_db.update_one({'user_id': message.from_user.id}, {'$set': {'coin': coin}}, upsert=True)
     except:
         await message.answer(textback, reply_markup=main_menu)
         await Form.GetInfo.set()
