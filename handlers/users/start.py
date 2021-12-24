@@ -14,8 +14,8 @@ from utils.db_api import users_db
 @dp.message_handler(CommandStart(), state='*')
 async def bot_start(message: types.Message, state: FSMContext):
     textback = ""
-    args = message.get_args()
     async with state.proxy() as data:
+        args = message.get_args()
         req_db = users_db.update_one({'user_id': message.from_user.id},
             {'$set': {
                 "updated": datetime.now(),
@@ -32,18 +32,24 @@ async def bot_start(message: types.Message, state: FSMContext):
             textback = "Welcome {}".format(message.from_user.first_name)
             balance = users_db.find_and_modify({'user_id': message.chat.id}, {'$set': {"coin": 10}}, upsert=False)
         # print(textback)
-    try:
-        await bot.send_message(args, "Your friend has joined")
-        # print(args)
-        req_db = users_db.find_one({'user_id': int(args)})
-        # print(req_db)
-        coin = req_db['coin']
-        coin += 10
-        users_db.find_and_modify({'user_id': int(args)}, {'$set': {'coin': coin}}, upsert=True)
-        await bot.send_message(args, "Your balance: {}".format(coin))
-        await message.answer(textback, reply_markup=main_menu)
-        await Form.GetInfo.set()
-    except:
-        await message.answer(textback, reply_markup=main_menu)
-        await Form.GetInfo.set()
+        try:
+            req_db = users_db.find_one({'user_id': int(args)})
+            try:
+                print(req_db['invite_id'])
+                await message.answer("You can only register 1 time")
+            except:
+                await bot.send_message(args, "Your friend has joined")
+                print(args)
+                req_db = users_db.find_one({'user_id': int(args)})
+                print(req_db)
+                coin = req_db['coin']
+                coin += 10
+                users_db.find_and_modify({'user_id': int(args)}, {'$set': {'coin': coin}}, upsert=True)
+                users_db.find_and_modify({'user_id': int(args)}, {'$set': {'invite_id': message.from_user.id}}, upsert=True)
+                await bot.send_message(args, "Your balance: {}".format(coin))
+                await message.answer(textback, reply_markup=main_menu)
+                await Form.GetInfo.set()
+        except:
+            await message.answer(textback, reply_markup=main_menu)
+            await Form.GetInfo.set()
 
