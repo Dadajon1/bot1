@@ -91,7 +91,7 @@ async def check_user(msg: types.Message, state: FSMContext):
             like_list.append(like.username)
 
         if username in like_list:
-            coin = users_db.find_one()
+            coin = users_db.find_one({'user_id': msg.chat.id})
             coin = coin['coin']
             coin += 1
             users_db.find_and_modify({'user_id': msg.chat.id}, {'$set': {'coin': coin}}, upsert=False,
