@@ -56,7 +56,7 @@ async def get_user(msg: types.Message, state: FSMContext):
             text += "Add Here is a link 👆\n"
             text += "🧠 Use your account {} 🧠\n".format(username)
             text += "------------------------------\n"
-            text += "👍 Click “okay” for me to send the comment or click ❌ Skip if you want a different link.\n"
+            text += "👍 Click 'okay' to confirm this link or click ❌ Skip if you want a different link.\n"
             await msg.answer(text=text, reply_markup=okay_skip)
             await Form.CheckLike.set()
         except:
