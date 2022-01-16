@@ -4,8 +4,6 @@ from selenium import webdriver
 from instaloader import Post
 
 L = instaloader.Instaloader()
-# L.login("yoshlik_media", "112142249Aviator!")
-# driver = webdriver.Chrome()
 L.load_session_from_file('haminmoshotmi',
                                  '/home/ubuntu/.config/instaloader/session-haminmoshotmi')
 
