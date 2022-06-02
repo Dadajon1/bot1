@@ -1,8 +1,6 @@
 import instaloader
 from aiogram import types
-from bs4 import BeautifulSoup
 from instaloader import Post
-from selenium import webdriver
 from aiogram.dispatcher import FSMContext
 
 from loader import dp
